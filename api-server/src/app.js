@@ -1,11 +1,24 @@
 import express from "express";
 import path from "path";
 import cookieParser from "cookie-parser";
-import logger from "morgan";
+import morgan from "morgan";
 import routes from "./routes/index";
 
 const app = express();
-app.use(logger("dev"));
+
+console.log(`NODE_ENV: ${app.get("env")}`);
+
+switch (process.env.NODE_ENV) {
+  case process.env.NODE_ENV:
+    console.log("Development environment.....");
+    app.use(morgan("dev"));
+    break;
+  default:
+    console.log("Default environment.....");
+    app.use(morgan("tiny"));
+    break;
+}
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());

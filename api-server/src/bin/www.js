@@ -5,6 +5,7 @@
  */
 import app from "../app";
 import debugLib from "debug";
+//import morgan from "morgan";
 //import http from "http";
 const debug = debugLib("api-server:server");
 // generated code below.
@@ -15,7 +16,6 @@ const debug = debugLib("api-server:server");
 
 var port = normalizePort(process.env.PORT || "3000");
 app.set("port", port);
-
 app.listen(app.get("port"), () => {
   console.log(`API server is lisening on port:${port}`);
 });
