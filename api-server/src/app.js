@@ -2,15 +2,15 @@ import express from "express";
 import path from "path";
 import cookieParser from "cookie-parser";
 import logger from "morgan";
-import indexRouter from "./routes/index";
-import Joi from "Joi";
+//import indexRouter from "./routes/index";
+import * as Schemas from "./utilities/schemaDefinitions";
 
 const app = express();
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-//app.use(express.static(path.join(__dirname, "../public")));
+app.use(express.static(path.join(__dirname, "../public")));
 //app.get("/", indexRouter);
 
 const courses = [
@@ -40,8 +40,7 @@ app.get("/courses/:id", (req, res) => {
 });
 
 app.post("/courses", (req, res) => {
-  schemaValidation(req.body, res);
-
+  Schemas.courseObjValidation(req.body, res);
   const check = courses.find(obj => {
     return obj.id === req.body.id || obj.name === req.body.name;
   });
@@ -68,7 +67,7 @@ app.delete("/courses/:id", (req, res) => {
 });
 
 app.put("/courses/:id", (req, res) => {
-  schemaValidation(req.body, res);
+  Schemas.courseObjValidation(req.body, res);
 
   let item = courses.find(e => {
     return e.id === parseInt(req.params.id);
@@ -81,23 +80,5 @@ app.put("/courses/:id", (req, res) => {
     return res.status(404).send("No data found");
   }
 });
-
-function schemaValidation(body, res) {
-  const postSchema = Joi.object().keys({
-    id: Joi.number()
-      .integer()
-      .positive()
-      .required(),
-    name: Joi.string()
-      .min(2)
-      .required()
-  });
-
-  let { error } = Joi.validate(body, postSchema);
-
-  if (error) {
-    return res.send(`${error.name} : ${error.details[0].message}`);
-  }
-}
 
 export default app;
