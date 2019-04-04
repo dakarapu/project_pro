@@ -28,10 +28,10 @@ switch (process.env.NODE_ENV) {
 }
 
 dbConnection();
-//createCourse();
+createCourse();
 //getCourses();
 //updateCourse("5ca43a165c79570774180c2a");
-deleteCourse("5ca43a165c79570774180c2a");
+//deleteCourse("5ca43a165c79570774180c2a");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

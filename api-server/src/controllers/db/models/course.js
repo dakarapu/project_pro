@@ -1,11 +1,22 @@
 import mongoose from "mongoose";
 
 const schema = new mongoose.Schema({
-  name: String,
+  // validating name property as required by mongoose and also setting min and max length
+  name: { type: String, minlength: 5, maxlength: 255, required: true },
   author: String,
+  // validating category with enums so the inputs only take the mentioned enum values
+  category: { type: String, required: true, enum: ["node", "react", "author"] },
   tags: [String],
   date: { type: Date, default: Date.now },
-  isPublished: Boolean
+  isPublished: Boolean,
+  price: {
+    // validation is set to check if isPublished is set true using anonymous func
+    // never use arrow function as it cannot recognise this keyword
+    type: Number,
+    required: function() {
+      return this.isPublished;
+    }
+  }
 });
 
 // Tis course model is a class to always start with Uppercase letter
@@ -17,11 +28,17 @@ export async function createCourse() {
   const course = new Course({
     name: "Science",
     author: "Ravikanth",
+    category: "node",
     tags: ["physics", "chemistry"], //date property is not defined as we have set default value
-    isPublished: true
+    isPublished: true,
+    price: 150
   });
-  const result = await course.save();
-  console.log(result);
+  try {
+    const result = await course.save();
+    console.log(result);
+  } catch (err) {
+    console.log(err.message);
+  }
 }
 
 // find a course by query can change it to find by ID
