@@ -1,5 +1,6 @@
 import express from "express";
 import * as Schemas from "../utilities/schemaDefinitions";
+import * as courseController from "../controllers/courseController";
 
 let router = express.Router();
 const courses = [
@@ -30,17 +31,31 @@ router.get("/courses/:id", (req, res) => {
 });
 
 router.post("/courses", (req, res) => {
+  console.log("COURSE ROUTER INSIDE.....................");
   Schemas.courseObjValidation(req.body, res);
-  const check = courses.find(obj => {
-    return obj.id === req.body.id || obj.name === req.body.name;
-  });
+  // const check = courses.find(obj => {
+  //   return obj.id === req.body.id || obj.name === req.body.name;
+  // });
 
-  if (check === undefined) {
-    courses.push(req.body);
-    res.status(201).send(courses);
-  } else {
-    res.status(400).send(`Data exists cannot ovveride`);
-  }
+  // if (check === undefined) {
+  //   courses.push(req.body);
+  //   res.status(201).send(courses);
+  // } else {
+  //   res.status(400).send(`Data exists cannot ovveride`);
+  // }
+
+  console.log(req.body);
+
+  courseController
+    .create(req.body)
+    .then(result => {
+      console.log("COURSE ROUTER POST SUCCESS.....................");
+      return res.status(201).send(result);
+    })
+    .catch(err => {
+      console.log("COURSE ROUTER POST FAIL.....................");
+      return res.status(400).send(err);
+    });
 });
 
 router.delete("/courses/:id", (req, res) => {

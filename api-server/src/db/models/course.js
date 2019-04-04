@@ -6,7 +6,32 @@ const schema = new mongoose.Schema({
   author: String,
   // validating category with enums so the inputs only take the mentioned enum values
   category: { type: String, required: true, enum: ["node", "react", "author"] },
-  tags: [String],
+  tags: [String], // we cannot validate this tags property as it is array we need custom validator as below
+  tags_2: {
+    type: Array,
+    // this custom validator checks if tags_2 array has atleast one value
+    validate: {
+      validator: function(arr) {
+        return arr && arr.length > 0;
+      },
+      message: "cannot be empty must have atleast one value."
+    }
+  },
+  tags_3: {
+    type: Array,
+    // this custom validator is an async validator useful when data is populated from third-party
+    // or the data takes delay to load this is very useful need to set property isAsync
+    validate: {
+      isAsync: true,
+      validator: function(arr, callback) {
+        setTimeout(() => {
+          let result = arr && arr.length > 0;
+          callback(result);
+        }, 3000);
+      },
+      message: "cannot be empty must have atleast one value."
+    }
+  },
   date: { type: Date, default: Date.now },
   isPublished: Boolean,
   price: {
@@ -24,20 +49,36 @@ const schema = new mongoose.Schema({
 const Course = mongoose.model("course", schema);
 
 // Create and save new course
-export async function createCourse() {
+export async function createCourse(obj) {
+  // const course = new Course({
+  //   name: "Science",
+  //   author: "Ravikanth",
+  //   category: "node",
+  //   tags: ["physics", "chemistry"], //date property is not defined as we have set default value
+  //   tags_2: ["portal"],
+  //   isPublished: true,
+  //   price: 150
+  // });
+
   const course = new Course({
-    name: "Science",
-    author: "Ravikanth",
-    category: "node",
-    tags: ["physics", "chemistry"], //date property is not defined as we have set default value
-    isPublished: true,
-    price: 150
+    name: obj.name,
+    author: obj.author,
+    category: obj.category,
+    tags: obj.tags, //date property is not defined as we have set default value
+    tags_2: obj.tags_2,
+    isPublished: obj.isPublished,
+    price: obj.price
   });
   try {
     const result = await course.save();
-    console.log(result);
-  } catch (err) {
-    console.log(err.message);
+    return { response: result };
+  } catch (e) {
+    //looping the error object to gather multiple errors and display all at once
+    let errorList = [];
+    for (let field in e.errors) {
+      errorList.push(e.errors[field].message);
+    }
+    return { error: errorList };
   }
 }
 

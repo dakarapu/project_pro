@@ -2,13 +2,18 @@ import Joi from "Joi";
 
 export function courseObjValidation(body, res) {
   const courseSchema = Joi.object().keys({
-    id: Joi.number()
-      .integer()
-      .positive()
-      .required(),
     name: Joi.string()
-      .min(2)
-      .required()
+      .min(5)
+      .max(255)
+      .required(),
+    author: Joi.string(),
+    category: Joi.string().required(),
+    tags: Joi.array().items(Joi.string()),
+    tags_2: Joi.array().items(Joi.string()),
+    tags_3: Joi.array().items(Joi.string()),
+    date: Joi.date().iso(),
+    isPublished: Joi.boolean(),
+    price: Joi.number().precision(2)
   });
 
   let { error } = Joi.validate(body, courseSchema);
