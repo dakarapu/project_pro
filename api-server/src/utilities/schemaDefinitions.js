@@ -29,7 +29,7 @@ export function courseObjValidation(body, res) {
 
 export function userObjValidation(body, res) {
   const userSchema = Joi.object().keys({
-    id: Joi.number()
+    userId: Joi.number()
       .integer()
       .positive()
       .required(),
@@ -42,9 +42,7 @@ export function userObjValidation(body, res) {
     email: Joi.string()
       .min(5)
       .required(),
-    phone: Joi.number()
-      .integer()
-      .positive()
+    phone: Joi.string()
       .min(10)
       .max(10)
       .required()

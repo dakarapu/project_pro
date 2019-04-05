@@ -1,7 +1,9 @@
 import express from "express";
 import * as Schemas from "../utilities/schemaDefinitions";
+import * as userController from "../controllers/userController";
 
 let router = express.Router();
+
 const users = [
   {
     id: 1,
@@ -26,67 +28,48 @@ const users = [
   }
 ];
 
-/* GET home page. */
-router.get("/", (req, res) => {
-  res.send("Welcome to homepage!!");
-});
-
-router.get("/users", (req, res) => {
+// user retrieve all
+router.get("/users", async (req, res) => {
+  let users = await userController.getAll();
   res.send(users);
 });
 
-router.get("/users/:id", (req, res) => {
-  const course = users.find(obj => {
-    return obj.id === parseInt(req.params.id);
-  });
-
-  if (course !== undefined) {
-    res.status(200).send(course);
+// user retrieve by id
+router.get("/users/:id", async (req, res) => {
+  const user = await userController.getUser(req.params.id);
+  if (user !== undefined || user.length > 0) {
+    res.status(200).send(user);
   } else {
-    res.status(404).send(`No course available with the requested ID`);
+    res.status(404).send(`No user available with the requested ID`);
   }
 });
 
-router.post("/users", (req, res) => {
+// user create router
+router.post("/users", async (req, res) => {
   Schemas.userObjValidation(req.body, res);
-  const check = users.find(obj => {
-    return obj.id === req.body.id || obj.name === req.body.name;
-  });
-
-  if (check === undefined) {
-    users.push(req.body);
-    res.status(201).send(users);
-  } else {
-    res.status(400).send(`Data exists cannot ovveride`);
-  }
+  let result = await userController.create(req.body);
+  if (result.error) return res.status(400).send(result.error);
+  return res.status(201).send(result.response);
 });
 
-router.delete("/users/:id", (req, res) => {
-  let item = users.find(e => {
-    return e.id === parseInt(req.params.id);
-  });
-
-  if (item) {
-    users.splice(users.indexOf(item), 1);
-    return res.status(200).send(users);
-  } else {
-    return res.status(404).send("No data found");
-  }
-});
-
-router.put("/users/:id", (req, res) => {
+// user update router
+router.put("/users/:id", async (req, res) => {
   Schemas.userObjValidation(req.body, res);
+  let id = parseInt(req.params.id);
+  let obj = req.body;
+  let result = await userController.update(id, obj);
+  if (!result)
+    return res.status(404).send("No user found with requested userId");
+  return res.status(200).send(result);
+});
 
-  let item = users.find(e => {
-    return e.id === parseInt(req.params.id);
-  });
-
-  if (item && item.id === req.body.id) {
-    users.splice(users.indexOf(item), 1, req.body);
-    return res.status(200).send(users);
-  } else {
-    return res.status(404).send("No data found");
-  }
+// user delete router
+router.delete("/users/:id", async (req, res) => {
+  let id = parseInt(req.params.id);
+  let result = await userController.remove(id);
+  if (!result)
+    return res.status(404).send("No user found with requested userId");
+  return res.status(200).send(result);
 });
 
 export default router;

@@ -1,4 +1,3 @@
-import dbConnection from "../db/index";
 import {
   createCourse,
   getCourses,
@@ -8,7 +7,6 @@ import {
   deleteCourse
 } from "../db/models/course";
 
-dbConnection();
 export async function create(obj) {
   let course = await createCourse(obj);
   return course;

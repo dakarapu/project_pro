@@ -3,7 +3,7 @@ import path from "path";
 import cookieParser from "cookie-parser";
 import morgan from "morgan";
 import routes from "./routes/index";
-
+import dbConnection from "./db/index";
 const app = express();
 
 console.log(`NODE_ENV: ${app.get("env")}`);
@@ -18,6 +18,8 @@ switch (process.env.NODE_ENV) {
     app.use(morgan("tiny"));
     break;
 }
+
+dbConnection();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
