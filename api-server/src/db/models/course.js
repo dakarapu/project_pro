@@ -51,16 +51,6 @@ const Course = mongoose.model("course", schema);
 
 // Create and save new course
 export async function createCourse(obj) {
-  // const course = new Course({
-  //   name: "Science",
-  //   author: "Ravikanth",
-  //   category: "node",
-  //   tags: ["physics", "chemistry"], //date property is not defined as we have set default value
-  //   tags_2: ["portal"],
-  //   isPublished: true,
-  //   price: 150
-  // });
-
   const course = new Course({
     courseId: obj.courseId,
     name: obj.name,
@@ -105,13 +95,6 @@ export async function getCourses() {
 
 // find a course by ID
 export async function getCourseById(id) {
-  // const result = await Course.find({
-  //   author: "Ravikanth",
-  //   isPublished: true
-  // })
-  //   .limit(10)
-  //   .sort({ name: 1 })
-  //   .select({ name: 1, tags: 1 });
   try {
     const result = await Course.findOne({ courseId: id });
     if (!result) return { message: "No course found" };
@@ -135,23 +118,35 @@ export async function searchAndUpdateCourse(id) {
 // this update method uses update query function and updates document directly
 // rather than first find and then save as above function
 // this is much faster and can update multiple documents if provided the update criteria
-export async function updateCourse(id) {
-  const result = await Course.update(
-    { _id: id },
-    {
-      $set: {
-        name: "History",
-        author: "Ravikanth"
-      }
-    }
-  );
-  console.log(result);
+export async function updateCourse(id, obj) {
+  try {
+    const result = await Course.findOneAndUpdate(
+      { courseId: id },
+      {
+        $set: {
+          courseId: obj.courseId,
+          name: obj.name,
+          author: obj.author,
+          category: obj.category,
+          tags: obj.tags, //date property is not defined as we have set default value
+          tags_2: obj.tags_2,
+          tags_3: obj.tags_3,
+          isPublished: obj.isPublished,
+          price: obj.price
+        }
+      },
+      { new: true }
+    );
+    return result;
+  } catch (e) {
+    return e.error;
+  }
 }
 
 // deleteOne() removes a record from database
 // deleteMany() can remove multiple matched documents
 // findByIdAndRemove() finds a document and remoes from DB and returns the deleted document
 export async function deleteCourse(id) {
-  const result = await Course.deleteOne({ _id: id });
-  console.log(result);
+  const result = await Course.findOneAndRemove({ courseId: id });
+  return result;
 }

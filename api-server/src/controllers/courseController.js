@@ -21,7 +21,16 @@ export async function getAll() {
 }
 
 export async function getCourse(id) {
-  let courses = await getCourseById(id);
-  //if (courses.length < 1) return "No course available by the id:" + id;
-  return courses;
+  let course = await getCourseById(id);
+  return course;
+}
+
+export async function update(id, obj) {
+  let course = await updateCourse(id, obj);
+  return course;
+}
+
+export async function remove(id) {
+  let course = await deleteCourse(id);
+  return course;
 }
