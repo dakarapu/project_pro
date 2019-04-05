@@ -14,24 +14,28 @@ router.get("/", (req, res) => {
   res.send("Welcome to homepage!!");
 });
 
-router.get("/courses", (req, res) => {
+// course retrieve all
+router.get("/courses", async (req, res) => {
+  let courses = await courseController.getAll();
   res.send(courses);
 });
 
-router.get("/courses/:id", (req, res) => {
-  const course = courses.find(obj => {
-    return obj.id === parseInt(req.params.id);
-  });
+// course retrieve by id
+router.get("/courses/:id", async (req, res) => {
+  // const course = courses.find(obj => {
+  //   return obj.id === parseInt(req.params.id);
+  // });
 
-  if (course !== undefined) {
+  const course = await courseController.getCourse(req.params.id);
+  if (course !== undefined || course.length > 0) {
     res.status(200).send(course);
   } else {
     res.status(404).send(`No course available with the requested ID`);
   }
 });
 
-router.post("/courses", (req, res) => {
-  console.log("COURSE ROUTER INSIDE.....................");
+// course create router
+router.post("/courses", async (req, res) => {
   Schemas.courseObjValidation(req.body, res);
   // const check = courses.find(obj => {
   //   return obj.id === req.body.id || obj.name === req.body.name;
@@ -44,20 +48,12 @@ router.post("/courses", (req, res) => {
   //   res.status(400).send(`Data exists cannot ovveride`);
   // }
 
-  console.log(req.body);
-
-  courseController
-    .create(req.body)
-    .then(result => {
-      console.log("COURSE ROUTER POST SUCCESS.....................");
-      return res.status(201).send(result);
-    })
-    .catch(err => {
-      console.log("COURSE ROUTER POST FAIL.....................");
-      return res.status(400).send(err);
-    });
+  let result = await courseController.create(req.body);
+  if (result.error) return res.status(400).send(result.error);
+  return res.status(201).send(result.response);
 });
 
+// course delete router
 router.delete("/courses/:id", (req, res) => {
   let item = courses.find(e => {
     return e.id === parseInt(req.params.id);
@@ -71,6 +67,7 @@ router.delete("/courses/:id", (req, res) => {
   }
 });
 
+// course update router
 router.put("/courses/:id", (req, res) => {
   Schemas.courseObjValidation(req.body, res);
 

@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 const schema = new mongoose.Schema({
+  courseId: { type: Number, required: true },
   // validating name property as required by mongoose and also setting min and max length
   name: { type: String, minlength: 5, maxlength: 255, required: true },
   author: String,
@@ -14,7 +15,7 @@ const schema = new mongoose.Schema({
       validator: function(arr) {
         return arr && arr.length > 0;
       },
-      message: "cannot be empty must have atleast one value."
+      message: "tag_2 cannot be empty must have atleast one value."
     }
   },
   tags_3: {
@@ -29,7 +30,7 @@ const schema = new mongoose.Schema({
           callback(result);
         }, 3000);
       },
-      message: "cannot be empty must have atleast one value."
+      message: "tag_3 cannot be empty must have atleast one value."
     }
   },
   date: { type: Date, default: Date.now },
@@ -61,11 +62,13 @@ export async function createCourse(obj) {
   // });
 
   const course = new Course({
+    courseId: obj.courseId,
     name: obj.name,
     author: obj.author,
     category: obj.category,
     tags: obj.tags, //date property is not defined as we have set default value
     tags_2: obj.tags_2,
+    tags_3: obj.tags_3,
     isPublished: obj.isPublished,
     price: obj.price
   });
@@ -82,16 +85,40 @@ export async function createCourse(obj) {
   }
 }
 
-// find a course by query can change it to find by ID
+// find all course by query
 export async function getCourses() {
-  const result = await Course.find({
-    author: "Ravikanth",
-    isPublished: true
-  })
-    .limit(10)
-    .sort({ name: 1 })
-    .select({ name: 1, tags: 1 });
-  console.log(result);
+  // const result = await Course.find({
+  //   author: "Ravikanth",
+  //   isPublished: true
+  // })
+  //   .limit(10)
+  //   .sort({ name: 1 })
+  //   .select({ name: 1, tags: 1 });
+  try {
+    const result = await Course.find({}).sort({ name: 1 });
+    if (!result) return { message: "No records found" };
+    return result;
+  } catch (e) {
+    return e.error;
+  }
+}
+
+// find a course by ID
+export async function getCourseById(id) {
+  // const result = await Course.find({
+  //   author: "Ravikanth",
+  //   isPublished: true
+  // })
+  //   .limit(10)
+  //   .sort({ name: 1 })
+  //   .select({ name: 1, tags: 1 });
+  try {
+    const result = await Course.findOne({ courseId: id });
+    if (!result) return { message: "No course found" };
+    return result;
+  } catch (e) {
+    return e.error;
+  }
 }
 
 // this update function follows as by find and then save method

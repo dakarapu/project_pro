@@ -2,6 +2,10 @@ import Joi from "Joi";
 
 export function courseObjValidation(body, res) {
   const courseSchema = Joi.object().keys({
+    courseId: Joi.number()
+      .integer()
+      .positive()
+      .required(),
     name: Joi.string()
       .min(5)
       .max(255)
