@@ -6,7 +6,7 @@
     "start": "node ./bin/www",
     "server": "babel-node ./src/bin/www",
     "server:prod": "node ./dist/bin/www",
-    "dev": "npm-run-all server",
+    "dev": "SET NODE_ENV=development&& npm-run-all server",
     "clean": "rimraf dist",
     "build": "babel ./src --out-dir dist",
     "prod": "SET NODE_ENV=production npm-run-all clean build server:prod",
