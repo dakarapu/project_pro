@@ -7,7 +7,12 @@ import {
   deleteUser
 } from "../db/models/user";
 
+import bcrypt from "bcrypt";
+
 export async function create(obj) {
+  let salt = await bcrypt.genSalt(10);
+  let hash = await bcrypt.hash(obj.password, salt);
+  obj.password = hash;
   let user = await createUser(obj);
   return user;
 }

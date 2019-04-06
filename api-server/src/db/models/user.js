@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import _ from "lodash";
 
 const schema = new mongoose.Schema({
   firstName: { type: String, minlength: 2, required: true },
@@ -18,6 +19,9 @@ const schema = new mongoose.Schema({
 const User = mongoose.model("user", schema);
 
 export async function createUser(obj) {
+  //let userObj = _.pick(obj,['firstName','lastName','email','password','phone'])
+  //the above variable can be used to replace in creating new User instance
+  // ex: const user = new User(userObj);
   const user = new User({
     firstName: obj.firstName,
     lastName: obj.lastName,

@@ -58,3 +58,24 @@ export function userObjValidation(body) {
     return null;
   }
 }
+
+export function authObjValidation(body) {
+  const authSchema = Joi.object().keys({
+    email: Joi.string()
+      .min(5)
+      .required()
+      .email(),
+    password: Joi.string()
+      .min(5)
+      .max(255)
+      .required()
+  });
+
+  let { error } = Joi.validate(body, authSchema);
+
+  if (error) {
+    return error;
+  } else {
+    return null;
+  }
+}
