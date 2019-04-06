@@ -4,30 +4,6 @@ import * as userController from "../controllers/userController";
 
 let router = express.Router();
 
-const users = [
-  {
-    id: 1,
-    firstName: "Bruce",
-    lastName: "Wayne",
-    email: "bruce@outlook.com",
-    phone: "0370259276"
-  },
-  {
-    id: 2,
-    name: "Tony",
-    lastName: "Stark",
-    email: "tony@gmail.com",
-    phone: "0450018462"
-  },
-  {
-    id: 3,
-    name: "Peter",
-    lastName: "Parker",
-    email: "peter@yahoo.com",
-    phone: "0474982543"
-  }
-];
-
 // user retrieve all
 router.get("/users", async (req, res) => {
   let users = await userController.getAll();
@@ -46,15 +22,25 @@ router.get("/users/:id", async (req, res) => {
 
 // user create router
 router.post("/users", async (req, res) => {
-  Schemas.userObjValidation(req.body, res);
-  let result = await userController.create(req.body);
-  if (result.error) return res.status(400).send(result.error);
-  return res.status(201).send(result.response);
+  let error = Schemas.userObjValidation(req.body);
+  if (error !== null) {
+    return res.send(`${error.name} : ${error.details[0].message}`);
+  }
+  let user = await userController.getUser(req.body.email);
+  if (user && user.hasOwnProperty("message")) {
+    user = await userController.create(req.body);
+    return res.status(201).send(user.response);
+  } else {
+    return res.status(400).send("User already exists with this email.");
+  }
 });
 
 // user update router
 router.put("/users/:id", async (req, res) => {
-  Schemas.userObjValidation(req.body, res);
+  let error = Schemas.userObjValidation(req.body);
+  if (error !== null) {
+    return res.send(`${error.name} : ${error.details[0].message}`);
+  }
   let id = parseInt(req.params.id);
   let obj = req.body;
   let result = await userController.update(id, obj);

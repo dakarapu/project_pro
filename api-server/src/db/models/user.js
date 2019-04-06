@@ -1,11 +1,17 @@
 import mongoose from "mongoose";
 
 const schema = new mongoose.Schema({
-  userId: { type: Number, required: true },
   firstName: { type: String, minlength: 2, required: true },
   lastName: { type: String, minlength: 2, required: true },
-  email: { type: String, minlength: 5, required: true },
-  phone: { type: String, minlength: 10, maxlength: 10, required: true },
+  email: { type: String, minlength: 5, required: true, unique: true },
+  // password is hashed so maxlength is set to 1024
+  password: { type: String, minlength: 5, maxlength: 1024, required: true },
+  phone: {
+    type: String,
+    minlength: 10,
+    maxlength: 10,
+    required: true
+  },
   date: { type: Date, default: Date.now }
 });
 
@@ -13,10 +19,10 @@ const User = mongoose.model("user", schema);
 
 export async function createUser(obj) {
   const user = new User({
-    userId: obj.userId,
     firstName: obj.firstName,
     lastName: obj.lastName,
     email: obj.email,
+    password: obj.password,
     phone: obj.phone
   });
   try {
@@ -43,9 +49,9 @@ export async function getUsers() {
 }
 
 // find a user by ID
-export async function getUserById(id) {
+export async function getUserByEmail(id) {
   try {
-    const result = await User.findOne({ userId: id });
+    const result = await User.findOne({ email: id });
     if (!result) return { message: "No user found" };
     return result;
   } catch (e) {
@@ -61,7 +67,7 @@ export async function searchAndUpdateUser(id) {
   user.firstName = "Ravikanth";
   user.lastName = "Dakarapu";
   const result = await user.save();
-  console.log(result);
+  return result;
 }
 
 export async function updateUser(id, obj) {
@@ -70,7 +76,6 @@ export async function updateUser(id, obj) {
       { userId: id },
       {
         $set: {
-          userId: obj.userId,
           firstName: obj.firstName,
           lastName: obj.lastName,
           email: obj.email,

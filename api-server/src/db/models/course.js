@@ -15,7 +15,7 @@ const schema = new mongoose.Schema({
       validator: function(arr) {
         return arr && arr.length > 0;
       },
-      message: "tag_2 cannot be empty must have atleast one value."
+      message: "tags_2 cannot be empty must have atleast one value."
     }
   },
   tags_3: {
@@ -30,7 +30,7 @@ const schema = new mongoose.Schema({
           callback(result);
         }, 3000);
       },
-      message: "tag_3 cannot be empty must have atleast one value."
+      message: "tags_3 cannot be empty must have atleast one value."
     }
   },
   date: { type: Date, default: Date.now },
@@ -112,7 +112,7 @@ export async function searchAndUpdateCourse(id) {
   course.name = "Geography";
   course.author = "Dakarapu";
   const result = await course.save();
-  console.log(result);
+  return result;
 }
 
 // this update method uses update query function and updates document directly

@@ -27,12 +27,8 @@ export function courseObjValidation(body, res) {
   }
 }
 
-export function userObjValidation(body, res) {
+export function userObjValidation(body) {
   const userSchema = Joi.object().keys({
-    userId: Joi.number()
-      .integer()
-      .positive()
-      .required(),
     firstName: Joi.string()
       .min(2)
       .required(),
@@ -41,6 +37,11 @@ export function userObjValidation(body, res) {
       .required(),
     email: Joi.string()
       .min(5)
+      .required()
+      .email(),
+    password: Joi.string()
+      .min(5)
+      .max(255)
       .required(),
     phone: Joi.string()
       .min(10)
@@ -51,6 +52,9 @@ export function userObjValidation(body, res) {
   let { error } = Joi.validate(body, userSchema);
 
   if (error) {
-    return res.send(`${error.name} : ${error.details[0].message}`);
+    //return res.send(`${error.name} : ${error.details[0].message}`);
+    return error;
+  } else {
+    return null;
   }
 }
