@@ -1,7 +1,7 @@
 import {
   createUser,
   getUsers,
-  getUserByEmail,
+  getUserById,
   updateUser,
   searchAndUpdateUser,
   deleteUser
@@ -23,8 +23,8 @@ export async function getAll() {
   return users;
 }
 
-export async function getUser(email) {
-  let user = await getUserByEmail(email);
+export async function getUser(id) {
+  let user = await getUserById(id);
   return user;
 }
 

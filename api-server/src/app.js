@@ -5,9 +5,8 @@ import morgan from "morgan";
 import routes from "./routes/index";
 import dbConnection from "./db/index";
 import config from "config";
-const app = express();
 
-console.log(`NODE_ENV: ${app.get("env")}`);
+const app = express();
 
 if (!config.get("jwtPrivateKey")) {
   // exiting the app if the jwtPrivateKey variable is not set
@@ -18,7 +17,7 @@ if (!config.get("jwtPrivateKey")) {
 
 switch (process.env.NODE_ENV) {
   case process.env.NODE_ENV:
-    console.log("Development environment.....");
+    console.log("App_Env: ", process.env.NODE_ENV);
     app.use(morgan("dev"));
     break;
   default:

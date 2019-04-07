@@ -1,18 +1,33 @@
 import express from "express";
 import * as Schemas from "../utilities/schemaDefinitions";
 import * as userController from "../controllers/userController";
+import * as validation from "../middleware/authentication";
 
 let router = express.Router();
 
+// retrieve the current login user with authorization
+router.get("/users/me", validation.authenticateRoute, async (req, res) => {
+  let id = req.user._id;
+  const user = await userController.getUser(id);
+  if (user !== undefined || user.length > 0) {
+    // for security reasons we are just responding with below properties
+    let { firstName, lastName, email, phone } = user;
+    res.status(200).send({ firstName, lastName, email, phone });
+  } else {
+    res.status(404).send(`No user available with the requested ID`);
+  }
+});
+
 // user retrieve all
-router.get("/users", async (req, res) => {
+router.get("/users", validation.authenticateRoute, async (req, res) => {
   let users = await userController.getAll();
   res.send(users);
 });
 
 // user retrieve by id
-router.get("/users/:id", async (req, res) => {
-  const user = await userController.getUser(req.params.id);
+router.get("/users/:id", validation.authenticateRoute, async (req, res) => {
+  let id = parseInt(req.params.id);
+  const user = await userController.getUser(id);
   if (user !== undefined || user.length > 0) {
     res.status(200).send(user);
   } else {
@@ -21,7 +36,7 @@ router.get("/users/:id", async (req, res) => {
 });
 
 // user create router
-router.post("/users", async (req, res) => {
+router.post("/users", validation.authenticateRoute, async (req, res) => {
   let error = Schemas.userObjValidation(req.body);
   if (error !== null) {
     return res.send(`${error.name} : ${error.details[0].message}`);
@@ -36,7 +51,7 @@ router.post("/users", async (req, res) => {
 });
 
 // user update router
-router.put("/users/:id", async (req, res) => {
+router.put("/users/:id", validation.authenticateRoute, async (req, res) => {
   let error = Schemas.userObjValidation(req.body);
   if (error !== null) {
     return res.send(`${error.name} : ${error.details[0].message}`);
@@ -50,7 +65,7 @@ router.put("/users/:id", async (req, res) => {
 });
 
 // user delete router
-router.delete("/users/:id", async (req, res) => {
+router.delete("/users/:id", validation.authenticateRoute, async (req, res) => {
   let id = parseInt(req.params.id);
   let result = await userController.remove(id);
   if (!result)

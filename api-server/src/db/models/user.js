@@ -53,9 +53,9 @@ export async function getUsers() {
 }
 
 // find a user by ID
-export async function getUserByEmail(id) {
+export async function getUserById(id) {
   try {
-    const result = await User.findOne({ email: id });
+    const result = await User.findOne({ _id: id });
     if (!result) return { message: "No user found" };
     return result;
   } catch (e) {
