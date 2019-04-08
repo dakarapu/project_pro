@@ -19,27 +19,47 @@ export async function create(obj) {
 }
 
 export async function getAll() {
-  let users = await getUsers();
-  if (users.length < 1) return "No users available";
-  return users;
+  try {
+    let users = await getUsers();
+    if (users.length < 1) return "No users available";
+    return users;
+  } catch (e) {
+    return e;
+  }
 }
 
 export async function getUser(id) {
-  let user = await getUserById(id);
-  return user;
+  try {
+    let user = await getUserById(id);
+    return user;
+  } catch (e) {
+    return e;
+  }
 }
 
 export async function checkIfUserExists(id) {
-  let user = await getUserByEmail(id);
-  return user;
+  try {
+    let user = await getUserByEmail(id);
+    return user;
+  } catch (e) {
+    return e;
+  }
 }
 
 export async function update(id, obj) {
-  let user = await updateUser(id, obj);
-  return user;
+  try {
+    let user = await updateUser(id, obj);
+    return user;
+  } catch (e) {
+    return e;
+  }
 }
 
 export async function remove(id) {
-  let user = await deleteUser(id);
-  return user;
+  try {
+    let user = await deleteUser(id);
+    return user;
+  } catch (e) {
+    return e;
+  }
 }

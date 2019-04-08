@@ -16,7 +16,7 @@ router.get(
   asyncCallbackMiddleware(async (req, res) => {
     let id = req.user._id;
     const user = await userController.getUser(id);
-    if (user !== undefined || user.length > 0) {
+    if (user !== undefined && user.length > 0) {
       // for security reasons we are just responding with below properties
       let { firstName, lastName, email, phone, role } = user;
       res.status(200).send({ firstName, lastName, email, phone, role });
@@ -32,7 +32,13 @@ router.get(
   [authenticateRoute, checkPermissions],
   asyncCallbackMiddleware(async (req, res) => {
     let users = await userController.getAll();
-    res.send(users);
+    if (users === undefined) {
+      res.status(500).send("Internal Server Error.");
+    } else if (users && users.length < 1) {
+      res.status(404).send(`No users available.`);
+    } else {
+      res.status(200).send(users);
+    }
   })
 );
 

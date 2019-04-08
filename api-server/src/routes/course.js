@@ -23,7 +23,7 @@ router.get(
     if (courses === undefined) {
       res.status(500).send("Internal Server Error.");
     } else if (courses && courses.length < 1) {
-      res.status(404).send(`No course available with the requested ID`);
+      res.status(404).send(`No course availables`);
     } else {
       res.status(200).send(courses);
     }
