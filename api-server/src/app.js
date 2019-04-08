@@ -16,13 +16,17 @@ if (!config.get("jwtPrivateKey")) {
 }
 
 switch (process.env.NODE_ENV) {
-  case process.env.NODE_ENV:
+  case "development":
     console.log("App_Env: ", process.env.NODE_ENV);
     app.use(morgan("dev"));
     break;
+  case "production":
+    console.log("App_Env: ", process.env.NODE_ENV);
+    app.use(morgan("tiny"));
+    break;
   default:
     console.log("Default environment.....");
-    app.use(morgan("tiny"));
+    app.use(morgan("short"));
     break;
 }
 

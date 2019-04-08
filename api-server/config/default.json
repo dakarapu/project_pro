@@ -1,3 +1,9 @@
 {
-  "jwtPrivateKey": ""
+  "jwtPrivateKey": "",
+  "permissions": {
+    "roles": {
+      "admin": ["GET", "POST", "PUT", "DELETE"],
+      "registeredUser": ["GET", "POST"]
+    }
+  }
 }

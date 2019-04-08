@@ -2,6 +2,7 @@ import {
   createUser,
   getUsers,
   getUserById,
+  getUserByEmail,
   updateUser,
   searchAndUpdateUser,
   deleteUser
@@ -25,6 +26,11 @@ export async function getAll() {
 
 export async function getUser(id) {
   let user = await getUserById(id);
+  return user;
+}
+
+export async function checkIfUserExists(id) {
+  let user = await getUserByEmail(id);
   return user;
 }
 

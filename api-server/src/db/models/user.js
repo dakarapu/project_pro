@@ -13,6 +13,11 @@ const schema = new mongoose.Schema({
     maxlength: 10,
     required: true
   },
+  role: {
+    type: String,
+    required: true,
+    enum: ["admin", "registeredUser"]
+  },
   date: { type: Date, default: Date.now }
 });
 
@@ -27,7 +32,8 @@ export async function createUser(obj) {
     lastName: obj.lastName,
     email: obj.email,
     password: obj.password,
-    phone: obj.phone
+    phone: obj.phone,
+    role: obj.role
   });
   try {
     const result = await user.save();
@@ -63,6 +69,17 @@ export async function getUserById(id) {
   }
 }
 
+// find a user by email
+export async function getUserByEmail(emailId) {
+  try {
+    const result = await User.findOne({ email: emailId });
+    if (!result) return { message: "No user found" };
+    return result;
+  } catch (e) {
+    return e.error;
+  }
+}
+
 // this update function follows as by find and then save method
 export async function searchAndUpdateUser(id) {
   const user = await User.findById(id);
@@ -83,7 +100,8 @@ export async function updateUser(id, obj) {
           firstName: obj.firstName,
           lastName: obj.lastName,
           email: obj.email,
-          phone: obj.phone
+          phone: obj.phone,
+          role: obj.role
         }
       },
       { new: true }

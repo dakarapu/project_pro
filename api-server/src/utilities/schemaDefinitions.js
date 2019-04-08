@@ -1,6 +1,6 @@
 import Joi from "Joi";
 
-export function courseObjValidation(body, res) {
+export function courseObjValidation(body) {
   const courseSchema = Joi.object().keys({
     courseId: Joi.number()
       .integer()
@@ -23,7 +23,9 @@ export function courseObjValidation(body, res) {
   let { error } = Joi.validate(body, courseSchema);
 
   if (error) {
-    return res.send(`${error.name} : ${error.details[0].message}`);
+    return error;
+  } else {
+    return null;
   }
 }
 
@@ -46,13 +48,13 @@ export function userObjValidation(body) {
     phone: Joi.string()
       .min(10)
       .max(10)
-      .required()
+      .required(),
+    role: Joi.string().required()
   });
 
   let { error } = Joi.validate(body, userSchema);
 
   if (error) {
-    //return res.send(`${error.name} : ${error.details[0].message}`);
     return error;
   } else {
     return null;
