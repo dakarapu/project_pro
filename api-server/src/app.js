@@ -8,6 +8,16 @@ import config from "config";
 
 const app = express();
 
+process.on("uncaughtException", ex => {
+  console.log("Got Uncaught Exception");
+  process.exit(1);
+});
+
+process.on("unhandledRejection", ex => {
+  console.log("Got Unhandled Rejection");
+  process.exit(1);
+});
+
 if (!config.get("jwtPrivateKey")) {
   // exiting the app if the jwtPrivateKey variable is not set
   // exit code other than zero indicates error

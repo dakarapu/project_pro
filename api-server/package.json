@@ -10,7 +10,8 @@
     "clean": "rimraf dist",
     "build": "babel ./src --out-dir dist",
     "prod": "SET NODE_ENV=production npm-run-all clean build server:prod",
-    "watch": "nodemon"
+    "watch": "nodemon",
+    "test": "jest"
   },
   "dependencies": {
     "bcrypt": "^3.0.0",
@@ -31,6 +32,16 @@
     "@babel/core": "^7.4.0",
     "@babel/node": "^7.2.2",
     "@babel/preset-env": "^7.4.2",
+    "babel-jest": "^24.7.1",
+    "babel-preset-jest": "^24.6.0",
+    "jest": "^24.7.1",
     "nodemon": "^1.18.10"
+  },
+  "jest": {
+    "verbose": true,
+    "testURL": "http://localhost/"
+  },
+  "transform": {
+    "^.+\\.jsx?$": "babel-jest"
   }
 }
