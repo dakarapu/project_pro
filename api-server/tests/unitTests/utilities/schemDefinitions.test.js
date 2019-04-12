@@ -2,7 +2,7 @@ import {
   courseObjValidation,
   userObjValidation,
   authObjValidation
-} from "../../src/utilities/schemaDefinitions";
+} from "../../../src/utilities/schemaDefinitions";
 
 const course = {
   name: "8340384",
