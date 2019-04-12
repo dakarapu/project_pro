@@ -1,3 +1,9 @@
 {
-  "jwtPrivateKey": "PORTAL_PRO_TOKEN"
+  "jwtPrivateKey": "PORTAL_PRO_TOKEN",
+  "database": {
+    "host": "DB_HOST",
+    "username": "DB_USER",
+    "password": "DB_PWD",
+    "db": "DB_NAME"
+  }
 }

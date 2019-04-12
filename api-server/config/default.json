@@ -5,5 +5,11 @@
       "admin": ["GET", "POST", "PUT", "DELETE"],
       "registeredUser": ["GET", "POST"]
     }
+  },
+  "database": {
+    "host": "",
+    "username": "",
+    "password": "",
+    "db": ""
   }
 }

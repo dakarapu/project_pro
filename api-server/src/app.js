@@ -25,6 +25,16 @@ if (!config.get("jwtPrivateKey")) {
   process.exit(1);
 }
 
+const { host, username, password, db } = config.get("database");
+
+if (host && username && password && db) {
+  dbConnection();
+} else {
+  // exiting app process if database connection details is not set from env
+  console.log("FATAL ERROR: database connection details is not set !!");
+  process.exit(1);
+}
+
 switch (process.env.NODE_ENV) {
   case "development":
     console.log("App_Env: ", process.env.NODE_ENV);
@@ -39,8 +49,6 @@ switch (process.env.NODE_ENV) {
     app.use(morgan("short"));
     break;
 }
-
-dbConnection();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
