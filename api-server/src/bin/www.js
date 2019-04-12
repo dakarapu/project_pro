@@ -14,7 +14,7 @@ const debug = debugLib("api-server:server");
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || "3000");
+var port = normalizePort(process.env.PORT || "3006");
 app.set("port", port);
 app.listen(app.get("port"), () => {
   console.log(`API server is lisening on port:${port}`);
