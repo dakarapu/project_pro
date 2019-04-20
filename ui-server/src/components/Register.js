@@ -15,74 +15,54 @@ class Register extends React.Component {
       phone: "",
       role: ""
     };
-    //this.handleFirstNameChange = this.handleFirstNameChange.bind(this);
   }
-
-  //   handleFirstNameChange(value) {
-  //     this.setState({ firstName: value });
-  //   }
 
   handleChange = name => event => {
     this.setState({ [name]: event.target.value });
   };
 
+  gridFields = () => {
+    let list = [];
+    let fields = {
+      firstName: "First Name",
+      lastName: "Last Name",
+      email: "Email",
+      password: "Password",
+      phone: "Phone"
+    };
+    for (let prop in fields) {
+      // always use an array for a list of item to render
+      // react supports only array of tiems but not regular way of appending as string
+      list.push(
+        <Grid item xs={12}>
+          <TextField
+            id={prop}
+            label={fields[prop]}
+            className={""}
+            fullWidth={true}
+            value={this.state[prop]}
+            onChange={this.handleChange(prop)}
+            margin="normal"
+          />
+        </Grid>
+      );
+    }
+    return list;
+  };
+
   render() {
     return (
       <div>
-        <Grid container spacing={24} wrap={"wrap"} justify={"center"}>
-          <form>
-            <Grid item xs={12}>
-              <TextField
-                id="firstName"
-                label="First Name"
-                className={""}
-                value={this.state.firstName}
-                onChange={this.handleChange("firstName")}
-                margin="normal"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                id="lastName"
-                label="Last Name"
-                className={""}
-                value={this.state.lastName}
-                onChange={this.handleChange("lastName")}
-                margin="normal"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                id="email"
-                label="Email"
-                className={""}
-                value={this.state.email}
-                onChange={this.handleChange("email")}
-                margin="normal"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                id="password"
-                label="Password"
-                className={""}
-                value={this.state.password}
-                onChange={this.handleChange("password")}
-                margin="normal"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <TextField
-                id="phone"
-                label="Phone"
-                className={""}
-                value={this.state.phone}
-                onChange={this.handleChange("phone")}
-                margin="normal"
-              />
-            </Grid>
-            <Grid item xs={12}>
-              <Button variant="contained" color="primary" disableRipple>
+        <Grid container={true} spacing={24} wrap={"wrap"} justify={"center"}>
+          <form id={"registerForm"}>
+            {this.gridFields()}
+            <Grid item xl={12}>
+              <Button
+                variant="contained"
+                color="primary"
+                disableRipple
+                disabled={false}
+              >
                 Register
               </Button>
             </Grid>
