@@ -5,6 +5,7 @@ import morgan from "morgan";
 import routes from "./routes/index";
 import dbConnection from "./db/index";
 import config from "config";
+import cors from "cors";
 
 const app = express();
 
@@ -50,6 +51,7 @@ switch (process.env.NODE_ENV) {
     break;
 }
 
+app.use(cors()); // enabling CORS on server
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
