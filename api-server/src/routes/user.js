@@ -61,9 +61,15 @@ router.get(
 router.post(
   "/users",
   asyncCallbackMiddleware(async (req, res) => {
+    console.log("This is USER Req Body:", req.body);
     let error = Schemas.userObjValidation(req.body);
     if (error !== null) {
-      return res.send(`${error.name} : ${error.details[0].message}`);
+      return (
+        res
+          .status(400)
+          //.send(`${error.name} : ${error.details[0].message}`);
+          .send(error)
+      );
     }
     let user = await userController.checkIfUserExists(req.body.email);
     if (user && user.hasOwnProperty("message")) {
@@ -82,7 +88,9 @@ router.put(
   asyncCallbackMiddleware(async (req, res) => {
     let error = Schemas.userObjValidation(req.body);
     if (error !== null) {
-      return res.send(`${error.name} : ${error.details[0].message}`);
+      return res
+        .status(400)
+        .send(`${error.name} : ${error.details[0].message}`);
     }
     let id = parseInt(req.params.id);
     let obj = req.body;

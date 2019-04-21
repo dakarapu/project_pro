@@ -26,14 +26,45 @@ class Register extends React.Component {
 
   handleFormSubmit = async e => {
     e.preventDefault();
+    console.log(this.state);
     try {
-      console.log(this.state);
       let res = await CreateUser(this.state);
-      console.log(res);
+      console.log("Success response from Server: ", res);
+      return res;
     } catch (e) {
-      console.error(e);
+      console.log("Error resposne from Server", e.name);
+      return e;
     }
   };
+
+  generateFormItems() {
+    let items = [];
+    this.list = {
+      firstName: "First Name",
+      lastName: "Last Name",
+      email: "Email",
+      password: "Password",
+      phone: "Phone",
+      role: "Role"
+    };
+    for (let prop in this.list) {
+      if (prop !== "role") {
+        items.push(
+          <div className={"field"} key={this.list[prop]}>
+            {/* <label>{this.list[prop]}</label> */}
+            <input
+              type={this.list[prop] === "Password" ? "password" : "text"}
+              value={this.state[prop]}
+              onChange={this.handleChange}
+              name={prop}
+              placeholder={this.list[prop]}
+            />
+          </div>
+        );
+      }
+    }
+    return items;
+  }
 
   render() {
     return (
@@ -42,59 +73,9 @@ class Register extends React.Component {
           className={"ui form registerForm"}
           onSubmit={this.handleFormSubmit}
         >
-          <div className={"field focus"}>
-            <label>First Name</label>
-            <input
-              type={"text"}
-              value={this.state.firstName}
-              onChange={this.handleChange}
-              name={"firstName"}
-              placeholder={"First Name"}
-            />
-          </div>
-          <div className={"field"}>
-            <label>Last Name</label>
-            <input
-              type={"text"}
-              value={this.state.lastName}
-              onChange={this.handleChange}
-              name={"lastName"}
-              placeholder={"Last Name"}
-            />
-          </div>
-
-          <div className={"field"}>
-            <label>Email</label>
-            <input
-              type={"text"}
-              value={this.state.email}
-              onChange={this.handleChange}
-              name={"email"}
-              placeholder={"Email"}
-            />
-          </div>
-          <div className={"field"}>
-            <label>Password</label>
-            <input
-              type={"password"}
-              value={this.state.password}
-              onChange={this.handleChange}
-              name={"password"}
-              placeholder={"Password"}
-            />
-          </div>
-          <div className={"field"}>
-            <label>Phone</label>
-            <input
-              type={"text"}
-              value={this.state.phone}
-              onChange={this.handleChange}
-              name={"phone"}
-              placeholder={"Phone"}
-            />
-          </div>
-          <button className={"ui button"} type={"submit"}>
-            Submit
+          {this.generateFormItems()}
+          <button className={"ui button registerFormButton"} type={"submit"}>
+            Register
           </button>
         </form>
       </div>
