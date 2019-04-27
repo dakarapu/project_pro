@@ -9,6 +9,7 @@ import {
 } from "react-router-dom";
 import Register from "./Register";
 import Login from "./Login";
+import Course from "./Course";
 
 class App extends React.Component {
   render() {
@@ -19,6 +20,7 @@ class App extends React.Component {
             <Route exact path="/" render={() => <Redirect to="/login" />} />
             <Route path="/login" component={Login} />
             <Route path={"/register"} component={Register} />
+            <Route path={"/courses"} component={Course} />
           </Switch>
         </div>
       </Router>

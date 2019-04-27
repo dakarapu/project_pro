@@ -52,9 +52,12 @@ switch (process.env.NODE_ENV) {
 }
 
 // enabling CORS on server
-// passing CORS options exposedHeaders
-// this option will set Access-Control-Expose-Headers on HTTP response headers
-app.use(cors({ exposedHeaders: ["x-auth-token"] }));
+// passing CORS options exposedHeaders, allowedHeaders
+// exposedHeaders option will set Access-Control-Expose-Headers on HTTP response headers
+// allowedHeaders option will set Access-Control-Allow-Headers on HTTP request headers
+app.use(
+  cors({ exposedHeaders: ["x-auth-token"], allowedHeaders: ["x-auth-token"] })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
