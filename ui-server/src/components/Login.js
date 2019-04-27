@@ -5,7 +5,7 @@ import React from "react";
 // import TextField from "@material-ui/core/TextField";
 // import FormLabel from "@material-ui/core/FormLabel";
 import "./styles/register.css";
-import CreateUser from "./apiClient/createUserClient";
+import AuthenticateUser from "./apiClient/authenticateUserClient";
 import {
   BrowserRouter as Router,
   Route,
@@ -18,12 +18,8 @@ class Register extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      firstName: "",
-      lastName: "",
       email: "",
-      password: "",
-      phone: "",
-      role: ""
+      password: ""
     };
   }
 
@@ -35,8 +31,8 @@ class Register extends React.Component {
     e.preventDefault();
     console.log(this.state);
     try {
-      let res = await CreateUser(this.state);
-      console.log("Success response from Server: ", res);
+      let res = await AuthenticateUser(this.state);
+      console.log("Success response from Server: ", res.headers);
       return res;
     } catch (e) {
       console.log("Error resposne from Server", e.name);
@@ -47,18 +43,13 @@ class Register extends React.Component {
   generateFormItems() {
     let items = [];
     this.list = {
-      firstName: "First Name",
-      lastName: "Last Name",
       email: "Email",
-      password: "Password",
-      phone: "Phone",
-      role: "Role"
+      password: "Password"
     };
     for (let prop in this.list) {
       if (prop !== "role") {
         items.push(
           <div className={"field"} key={this.list[prop]}>
-            {/* <label>{this.list[prop]}</label> */}
             <input
               type={this.list[prop] === "Password" ? "password" : "text"}
               value={this.state[prop]}
@@ -82,10 +73,10 @@ class Register extends React.Component {
         >
           {this.generateFormItems()}
           <button className={"ui button registerFormButton"} type={"submit"}>
-            Register
+            Login
           </button>
         </form>
-        <Link to={"/login"}>Sign In</Link>
+        <Link to={"/register"}>Register</Link>
       </div>
     );
   }
