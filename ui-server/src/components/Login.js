@@ -30,6 +30,7 @@ class Register extends React.Component {
       let res = await AuthenticateUser(this.state);
       console.log("Login server Response: ", res);
       ls("x-auth-token", res.headers["x-auth-token"]);
+      window.location.reload();
       return;
       //console.log("Success response from Server: ", ls.get("x-auth-token"));
       //return <Redirect to={"/courses"} />;

@@ -40,6 +40,7 @@ class Course extends React.Component {
 
   logoutClick() {
     ls.clear();
+    window.location.reload();
     //return <Redirect to={"/"} />;
   }
 
@@ -55,10 +56,14 @@ class Course extends React.Component {
             <i className={"book icon huge"} />
           </div>
           <div className={"fourteen wide column"}>
-            {this.state.courses ? (
-              <CourseTableView list={this.state.courses} />
+            {ls.get("x-auth-token") ? (
+              this.state.courses ? (
+                <CourseTableView list={this.state.courses} />
+              ) : (
+                "No Courses"
+              )
             ) : (
-              "No Courses"
+              <Redirect to="/" />
             )}
           </div>
           <button key={"logout"} onClick={this.logoutClick}>
