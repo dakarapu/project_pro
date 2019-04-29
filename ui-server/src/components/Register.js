@@ -1,11 +1,6 @@
 import React from "react";
-//import ReactDOM from "react-dom";
-// import Grid from "@material-ui/core/Grid";
-// import Button from "@material-ui/core/Button";
-// import TextField from "@material-ui/core/TextField";
-// import FormLabel from "@material-ui/core/FormLabel";
 import "./styles/register.css";
-import CreateUser from "./apiClient/createUserClient";
+import CreateUser from "./apiClient/userClient";
 import {
   BrowserRouter as Router,
   Route,

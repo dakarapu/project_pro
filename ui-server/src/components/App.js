@@ -10,6 +10,7 @@ import {
 import Register from "./Register";
 import Login from "./Login";
 import Course from "./Course";
+import ls from "local-storage";
 
 class App extends React.Component {
   render() {

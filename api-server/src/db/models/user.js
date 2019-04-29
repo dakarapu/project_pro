@@ -27,6 +27,7 @@ export async function createUser(obj) {
   //let userObj = _.pick(obj,['firstName','lastName','email','password','phone'])
   //the above variable can be used to replace in creating new User instance
   // ex: const user = new User(userObj);
+  console.log("DB create user: ", obj);
   const user = new User({
     firstName: obj.firstName,
     lastName: obj.lastName,

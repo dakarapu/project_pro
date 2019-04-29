@@ -1,9 +1,4 @@
 import React from "react";
-//import ReactDOM from "react-dom";
-// import Grid from "@material-ui/core/Grid";
-// import Button from "@material-ui/core/Button";
-// import TextField from "@material-ui/core/TextField";
-// import FormLabel from "@material-ui/core/FormLabel";
 import "./styles/register.css";
 import AuthenticateUser from "./apiClient/authenticateUserClient";
 import {
@@ -13,6 +8,7 @@ import {
   Switch,
   Redirect
 } from "react-router-dom";
+import ls from "local-storage";
 
 class Register extends React.Component {
   constructor(props) {
@@ -32,8 +28,12 @@ class Register extends React.Component {
     console.log(this.state);
     try {
       let res = await AuthenticateUser(this.state);
-      console.log("Success response from Server: ", res.headers);
-      return res;
+      console.log("Login server Response: ", res);
+      ls("x-auth-token", res.headers["x-auth-token"]);
+      return;
+      //console.log("Success response from Server: ", ls.get("x-auth-token"));
+      //return <Redirect to={"/courses"} />;
+      //return res;
     } catch (e) {
       console.log("Error resposne from Server", e.name);
       return e;
@@ -76,6 +76,7 @@ class Register extends React.Component {
             Login
           </button>
         </form>
+        {ls.get("x-auth-token") ? <Redirect to="/courses" /> : null}
         <Link to={"/register"}>Register</Link>
       </div>
     );

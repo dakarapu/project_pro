@@ -2,6 +2,15 @@ import React from "react";
 import CourseClient from "./apiClient/courseClient";
 import CourseTableView from "./CourseTableView";
 import "./styles/course.css";
+import ls from "local-storage";
+
+import {
+  BrowserRouter as Router,
+  Route,
+  Link,
+  Switch,
+  Redirect
+} from "react-router-dom";
 
 class Course extends React.Component {
   constructor(props) {
@@ -13,18 +22,26 @@ class Course extends React.Component {
   }
 
   getCoursesList = async () => {
+    let token = await ls.get("x-auth-token");
+    console.log("Course TOken:", token);
     try {
-      let list = await CourseClient(
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1Y2E4M2M3NzY0ZmI5YzI2N2M3ZGE1MWIiLCJmaXJzdE5hbWUiOiJSYXZpa2FudGhfMiIsImVtYWlsIjoiZGFrYXJhcHVfNUBnbWFpbC5jb20iLCJyb2xlIjoiYWRtaW4iLCJpYXQiOjE1NTYzNjAxMzl9.0Zwrk-Ba6uqaDPBla98JzVwKUvJtKkQtEV8wpuqg-PQ"
-      );
-      console.log("Courses received: ", list);
-      this.setState({
-        courses: list.data
-      });
+      if (token) {
+        console.log("Course Comp Token", typeof token);
+        let list = await CourseClient(token);
+        console.log("Courses received: ", list);
+        this.setState({
+          courses: list.data
+        });
+      }
     } catch (e) {
       return e;
     }
   };
+
+  logoutClick() {
+    ls.clear();
+    //return <Redirect to={"/"} />;
+  }
 
   componentWillMount() {
     this.getCoursesList();
@@ -35,15 +52,18 @@ class Course extends React.Component {
       <div className={"course-table"}>
         <div className={"ui grid"}>
           <div className="two wide column">
-            <p>{"This is course Page..."}</p>
+            <i className={"book icon huge"} />
           </div>
-          <div className="fourteen wide column">
+          <div className={"fourteen wide column"}>
             {this.state.courses ? (
               <CourseTableView list={this.state.courses} />
             ) : (
               "No Courses"
             )}
           </div>
+          <button key={"logout"} onClick={this.logoutClick}>
+            Logout
+          </button>
         </div>
       </div>
     );
