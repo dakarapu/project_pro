@@ -49,23 +49,22 @@ class Course extends React.Component {
   }
 
   render() {
+    const data = ls.get("x-auth-token") ? (
+      this.state.courses ? (
+        <CourseTableView list={this.state.courses} />
+      ) : (
+        "No Courses"
+      )
+    ) : (
+      <Redirect to="/" />
+    );
     return (
       <div className={"course-table"}>
         <div className={"ui grid"}>
           <div className="two wide column">
             <i className={"book icon huge"} />
           </div>
-          <div className={"fourteen wide column"}>
-            {ls.get("x-auth-token") ? (
-              this.state.courses ? (
-                <CourseTableView list={this.state.courses} />
-              ) : (
-                "No Courses"
-              )
-            ) : (
-              <Redirect to="/" />
-            )}
-          </div>
+          <div className={"fourteen wide column"}>{data}</div>
           <button key={"logout"} onClick={this.logoutClick}>
             Logout
           </button>
