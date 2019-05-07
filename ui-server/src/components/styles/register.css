@@ -1,4 +1,4 @@
-.registerForm {
+/* .registerForm {
   width: 350px;
   margin-top: 5em;
   margin-left: 24em;
@@ -6,4 +6,36 @@
 
 .registerFormButton {
   width: 350px;
+} */
+
+.ui.container.segment {
+  width: 40%;
+  margin-top: 80px;
+  /* font-family:  */
+}
+
+.line {
+  width: 100%;
+  margin-bottom: 20px;
+  border-bottom: 1px solid lightgrey;
+}
+
+.ui.form {
+  width: 100%;
+  padding: 20px;
+}
+
+.ui.button {
+  width: 100%;
+}
+
+.login.signup.span {
+  /* margin-left: 25%; */
+  position: relative;
+  margin-left: 25%;
+}
+.login.forgot.password.span {
+  /* margin-left: 25%; */
+  position: relative;
+  margin-left: 32%;
 }
