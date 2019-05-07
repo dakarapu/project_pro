@@ -1,5 +1,5 @@
 import React from "react";
-import "./styles/register.css";
+import "./styles/login.css";
 import AuthenticateUser from "./apiClient/authenticateUserClient";
 import {
   BrowserRouter as Router,
@@ -67,25 +67,27 @@ class Register extends React.Component {
 
   render() {
     return (
-      <div class="ui container segment">
-        <h3 class="ui header">Log In to Your Portal Account!</h3>
-        <div class="line" />
-        <form className={"ui form"} onSubmit={this.handleFormSubmit}>
-          {this.generateFormItems()}
-          <button className={"ui button"} type={"submit"}>
-            Login
-          </button>
-          <span className={"login forgot password span"}>
+      <div className={"login page"}>
+        <div class="ui container segment login">
+          <h3 class="ui header">Log In to Your Portal Account!</h3>
+          <div class="line" />
+          <form className={"ui form"} onSubmit={this.handleFormSubmit}>
+            {this.generateFormItems()}
+            <button className={"ui button"} type={"submit"}>
+              Login
+            </button>
+            <span className={"login forgot password span"}>
+              {ls.get("x-auth-token") ? <Redirect to="/courses" /> : null}
+              or
+              <Link to={"/register"}> Forgot Password</Link>
+            </span>
+          </form>
+          <span className={"login signup span"}>
             {ls.get("x-auth-token") ? <Redirect to="/courses" /> : null}
-            or
-            <Link to={"/register"}> Forgot Password</Link>
+            Don't have an account?
+            <Link to={"/register"}> Sign up</Link>
           </span>
-        </form>
-        <span className={"login signup span"}>
-          {ls.get("x-auth-token") ? <Redirect to="/courses" /> : null}
-          Don't have an account?
-          <Link to={"/register"}> Sign up</Link>
-        </span>
+        </div>
       </div>
     );
   }

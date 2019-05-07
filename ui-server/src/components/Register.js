@@ -70,18 +70,35 @@ class Register extends React.Component {
 
   render() {
     return (
-      <div>
-        <form
-          className={"ui form registerForm"}
-          onSubmit={this.handleFormSubmit}
-        >
-          {this.generateFormItems()}
-          <button className={"ui button registerFormButton"} type={"submit"}>
-            Register
-          </button>
-        </form>
-        <Link to={"/login"}>Sign In</Link>
+      <div className={"register page"}>
+        <div class="ui container segment register">
+          <h3 class="ui header">Register</h3>
+          <div class="line" />
+          <form className={"ui form"} onSubmit={this.handleFormSubmit}>
+            {this.generateFormItems()}
+            <button className={"ui button"} type={"submit"}>
+              Register
+            </button>
+          </form>
+          <span className={"login signup span"}>
+            Already have an account?
+            <Link to={"/login"}> Sign In</Link>
+          </span>
+        </div>
       </div>
+
+      // <div>
+      //   <form
+      //     className={"ui form registerForm"}
+      //     onSubmit={this.handleFormSubmit}
+      //   >
+      //     {this.generateFormItems()}
+      //     <button className={"ui button registerFormButton"} type={"submit"}>
+      //       Register
+      //     </button>
+      //   </form>
+      //   <Link to={"/login"}>Sign In</Link>
+      // </div>
     );
   }
 }
