@@ -3,6 +3,7 @@ import CourseClient from "./apiClient/courseClient";
 import CourseTableView from "./CourseTableView";
 import "./styles/course.css";
 import ls from "local-storage";
+import Menu from "./Menu";
 
 import {
   BrowserRouter as Router,
@@ -59,15 +60,18 @@ class Course extends React.Component {
       <Redirect to="/" />
     );
     return (
-      <div className={"course-table"}>
-        <div className={"ui grid"}>
-          <div className="two wide column">
-            <i className={"book icon huge"} />
+      <div>
+        <Menu isCoursesActive={"active"} />
+        <div className={"course-table"}>
+          <div className={"ui grid"}>
+            <div className="two wide column">
+              <i className={"book icon huge"} />
+            </div>
+            <div className={"fourteen wide column"}>{data}</div>
+            <button key={"logout"} onClick={this.logoutClick}>
+              Logout
+            </button>
           </div>
-          <div className={"fourteen wide column"}>{data}</div>
-          <button key={"logout"} onClick={this.logoutClick}>
-            Logout
-          </button>
         </div>
       </div>
     );
